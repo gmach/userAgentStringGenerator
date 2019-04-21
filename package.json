@@ -1,0 +1,23 @@
+{
+  "name": "useragentstringgenerator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "useragentstrings.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gmach/userAgentStringGenerator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gmach/userAgentStringGenerator/issues"
+  },
+  "homepage": "https://github.com/gmach/userAgentStringGenerator#readme",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "jsdom": "^14.1.0"
+  }
+}

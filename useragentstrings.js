@@ -2,9 +2,28 @@ const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const fs = require('fs');
 
-generateRandomUserAgentString();
+const FILENAME = 'useragentstrings.txt';
 
-async function generateRandomUserAgentString() {
+let lines;
+async function loadUserAgentFile() {
+    if (!fs.existsSync(FILENAME)) {
+        console.log(FILENAME + ' not found. Populating file with all user agent strings ...')
+        await saveAllUserAgentsToFile();
+    }
+    lines = await fs.promises.readFile(FILENAME);
+    lines += '';
+    lines = lines.split('\n');
+}
+
+async function getRandomUserAgent() {
+    if (!lines)
+        await loadUserAgentFile();
+    const getRandomUserAgentString = lines[Math.floor(Math.random()*lines.length)];
+    console.log('Your random user agent string is ' + getRandomUserAgentString);
+    return getRandomUserAgentString;
+}
+
+async function saveAllUserAgentsToFile() {
     const url = 'http://www.useragentstring.com/pages/useragentstring.php?name=All';
     const dom = await JSDOM.fromURL(url);  // JSDOM.fromURL(url returns a promise
     let links = dom.window.document.querySelectorAll('a');
@@ -25,7 +44,7 @@ async function generateRandomUserAgentString() {
                     const document = dom.window.document;
                     const textarea = document.querySelector('#uas_textfeld');
                     BROWSER_AGENTS[id] = textarea.textContent;
-                    fs.appendFile('useragentstrings.txt', '\n' + textarea.textContent, (err) => {
+                    fs.appendFile(FILENAME, '\n' + textarea.textContent, (err) => {
                         if (err) throw err;
                     });
                     return textarea.textContent;
@@ -48,3 +67,5 @@ async function generateRandomUserAgentString() {
     }
 
 }
+
+getRandomUserAgent();
